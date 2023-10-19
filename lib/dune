@@ -1,2 +1,5 @@
 (library
  (name raijin))
+
+(menhir
+  (modules parser))
