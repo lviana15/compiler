@@ -1,3 +1,11 @@
+/* Ocaml import */
+
+%{
+    open Ast
+%}
+
+/* Token definition */
+
 %token TYPE
 %token VAR
 %token FUNCION
@@ -43,4 +51,25 @@
 %token <string> ID
 %token EOF
 
+/* Operators Precedence */
+
+%left PLUS MINUS
+%right DIVIDE TIMES
+
+%start <exp> program
+
 %%
+
+/* Grammar */
+
+exp :
+    | i = ID; { ID i }
+    | i = INT; { INT i }
+    | e1 = exp; op = bin_op; e2 = exp { ID = e1; bin_op; ID = e2 }
+;
+
+%inline bin_op:
+    | DIVIDE { bin_op_div }
+    | TIMES { bin_op_times }
+    | MINUS { bin_op_minus }
+    | PLUS { bin_op_plu }
